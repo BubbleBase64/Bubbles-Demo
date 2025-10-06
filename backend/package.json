@@ -1,0 +1,18 @@
+{
+  "name": "bubbles-backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "worker:fetcher": "node workers/fetcher.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongoose": "^8.0.3",
+    "rss-parser": "^3.12.0"
+  }
+}

@@ -1,0 +1,20 @@
+/* components/ItemSlider/slider.css */
+/* Hide scrollbars for webkit browsers */
+.item-slider::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbars for Firefox */
+.item-slider {
+  scrollbar-width: none;
+}
+
+/* Hide scrollbars for IE/Edge */
+.item-slider {
+  -ms-overflow-style: none;
+}
+
+/* Smooth scrolling behavior */
+.item-slider {
+  scroll-behavior: smooth;
+}

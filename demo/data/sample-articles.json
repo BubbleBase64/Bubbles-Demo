@@ -1,0 +1,92 @@
+[
+    {
+        "id": "1",
+        "title": "React Native 0.74 Released with New Features",
+        "content": "The React Native team has announced the release of version 0.74, bringing significant improvements to performance and developer experience. This update includes enhanced debugging tools, better TypeScript support, and optimized bundle sizes.",
+        "url": "https://reactnative.dev/blog/2024/04/22/release-0.74",
+        "publishedAt": "2024-04-22T10:00:00Z",
+        "source": {
+            "name": "React Native Blog",
+            "url": "https://reactnative.dev"
+        },
+        "category": "technology",
+        "tags": [
+            "react-native",
+            "mobile",
+            "development"
+        ],
+        "imageUrl": "https://reactnative.dev/img/logo-og.png"
+    },
+    {
+        "id": "2",
+        "title": "Node.js Performance Optimization Techniques",
+        "content": "Learn about the latest techniques for optimizing Node.js applications, including V8 engine improvements, memory management strategies, and asynchronous programming best practices.",
+        "url": "https://nodejs.org/en/docs/guides/simple-profiling",
+        "publishedAt": "2024-04-21T14:30:00Z",
+        "source": {
+            "name": "Node.js Documentation",
+            "url": "https://nodejs.org"
+        },
+        "category": "technology",
+        "tags": [
+            "nodejs",
+            "performance",
+            "backend"
+        ],
+        "imageUrl": "https://nodejs.org/static/images/logo.svg"
+    },
+    {
+        "id": "3",
+        "title": "Cross-Platform Development with Expo",
+        "content": "Discover how Expo simplifies cross-platform development by providing a unified development experience for iOS, Android, and web applications using React Native.",
+        "url": "https://expo.dev/blog/expo-sdk-50",
+        "publishedAt": "2024-04-20T09:15:00Z",
+        "source": {
+            "name": "Expo Blog",
+            "url": "https://expo.dev"
+        },
+        "category": "technology",
+        "tags": [
+            "expo",
+            "cross-platform",
+            "react-native"
+        ],
+        "imageUrl": "https://expo.dev/static/images/brand/expo-icon.png"
+    },
+    {
+        "id": "4",
+        "title": "Docker Best Practices for Node.js Applications",
+        "content": "Essential Docker practices for containerizing Node.js applications, including multi-stage builds, security considerations, and optimization strategies for production deployments.",
+        "url": "https://docs.docker.com/language/nodejs/",
+        "publishedAt": "2024-04-19T16:45:00Z",
+        "source": {
+            "name": "Docker Documentation",
+            "url": "https://docs.docker.com"
+        },
+        "category": "devops",
+        "tags": [
+            "docker",
+            "nodejs",
+            "containerization"
+        ],
+        "imageUrl": "https://docs.docker.com/assets/images/docker-docs-logo.svg"
+    },
+    {
+        "id": "5",
+        "title": "TypeScript 5.4 New Features and Improvements",
+        "content": "Explore the latest features in TypeScript 5.4, including improved inference, better error messages, and enhanced IDE support for modern JavaScript development.",
+        "url": "https://devblogs.microsoft.com/typescript/announcing-typescript-5-4/",
+        "publishedAt": "2024-04-18T11:20:00Z",
+        "source": {
+            "name": "TypeScript Blog",
+            "url": "https://www.typescriptlang.org"
+        },
+        "category": "technology",
+        "tags": [
+            "typescript",
+            "javascript",
+            "programming"
+        ],
+        "imageUrl": "https://www.typescriptlang.org/icons/icon-512x512.png"
+    }
+]

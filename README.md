@@ -3,18 +3,7 @@
 Bubbles is an innovative, AI-enhanced web platform that transforms the way people consume news. By combining cutting-edge natural language processing with user-centered design, Bubbles delivers a personalized, critical, and socially engaging news experience.
 
 ## 🌐 Live Demo
-Coming soon...
-
----
-
-## 📌 Table of Contents
-- [Overview](#overview)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Team](#team)
-- [License](#license)
+https://www.bubblesnews.app
 
 ---
 

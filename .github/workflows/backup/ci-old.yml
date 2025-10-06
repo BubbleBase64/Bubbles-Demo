@@ -1,0 +1,381 @@
+name: Bubbles CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  issue_comment:
+    types: [created]
+
+env:
+  NODE_VERSION: '18.x'
+  PYTHON_VERSION: '3.9'
+
+jobs:
+  # Jira Integration Job
+  jira-integration:
+    name: Jira Integration
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Extract Jira issue key from commit/PR
+      id: jira
+      run: |
+        # Extract Jira issue key from commit message or PR title
+        if [ "${{ github.event_name }}" == "pull_request" ]; then
+          COMMIT_MSG="${{ github.event.pull_request.title }}"
+          PR_BODY="${{ github.event.pull_request.body }}"
+          FULL_TEXT="$COMMIT_MSG $PR_BODY"
+        else
+          COMMIT_MSG="${{ github.event.head_commit.message }}"
+          FULL_TEXT="$COMMIT_MSG"
+        fi
+        
+        # Extract Jira issue key (format: PROJ-123)
+        JIRA_KEY=$(echo "$FULL_TEXT" | grep -oE '[A-Z]+-[0-9]+' | head -1)
+        
+        if [ -n "$JIRA_KEY" ]; then
+          echo "jira-key=$JIRA_KEY" >> $GITHUB_OUTPUT
+          echo "Found Jira issue: $JIRA_KEY"
+        else
+          echo "No Jira issue key found in commit message or PR"
+        fi
+
+    - name: Setup Jira configuration
+      if: steps.jira.outputs.jira-key != ''
+      run: |
+        mkdir -p /home/runner/jira
+        cat > /home/runner/jira/config.yml << EOF
+        url: ${{ secrets.JIRA_BASE_URL }}
+        user: ${{ secrets.JIRA_USER_EMAIL }}
+        token: ${{ secrets.JIRA_API_TOKEN }}
+        EOF
+
+    - name: Update Jira issue - Build Started
+      if: steps.jira.outputs.jira-key != ''
+      uses: atlassian/gajira-transition@v3
+      with:
+        issue: ${{ steps.jira.outputs.jira-key }}
+        transition: "In Progress"
+      env:
+        JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+        JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+        JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+
+    - name: Add comment to Jira issue
+      if: steps.jira.outputs.jira-key != ''
+      uses: atlassian/gajira-comment@v3
+      with:
+        issue: ${{ steps.jira.outputs.jira-key }}
+        comment: |
+          🚀 **CI/CD Pipeline Started**
+          
+          **Commit:** [${{ github.sha }}](${{ github.event.head_commit.url }})
+          **Branch:** ${{ github.ref_name }}
+          **Actor:** ${{ github.actor }}
+          **Workflow:** [${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          
+          Pipeline is running tests and building the application...
+      env:
+        JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+        JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+        JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+
+  # Frontend CI Job
+  frontend:
+    name: Frontend CI
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: frontend/package-lock.json
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run linting
+      run: npm run lint || echo "Linting not configured yet"
+
+    - name: Run type checking
+      run: npm run type-check || echo "Type checking not configured yet"
+
+    - name: Run tests
+      run: npm run test || echo "Tests not configured yet"
+
+    - name: Build frontend
+      run: npm run build || echo "Build script not configured yet"
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      if: success()
+      with:
+        name: frontend-build
+        path: frontend/dist/
+        retention-days: 7
+
+  # Backend CI Job
+  backend:
+    name: Backend CI
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # Node.js backend setup (if using Node.js)
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: backend/package-lock.json
+
+    - name: Install Node.js dependencies
+      run: npm ci || echo "No Node.js backend detected"
+
+    # Python backend setup (for AI/NLP components)
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+
+    - name: Cache pip dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('backend/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
+
+    - name: Run Python linting
+      run: |
+        if [ -f requirements-dev.txt ] && grep -q "flake8\|pylint\|black" requirements-dev.txt; then
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics || echo "Python linting not configured"
+        else
+          echo "Python linting dependencies not found"
+        fi
+
+    - name: Run Python tests
+      run: |
+        if [ -f requirements-dev.txt ] && grep -q "pytest" requirements-dev.txt; then
+          pytest || echo "Python tests not configured"
+        else
+          echo "pytest not configured"
+        fi
+
+    - name: Run Node.js backend tests
+      run: npm run test || echo "Node.js backend tests not configured"
+
+    - name: Run Node.js backend linting
+      run: npm run lint || echo "Node.js backend linting not configured"
+
+    - name: Build backend
+      run: npm run build || echo "Backend build not configured"
+
+  # Security scanning
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    needs: [frontend, backend]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Run security audit for frontend
+      working-directory: ./frontend
+      run: npm audit --audit-level moderate || echo "Frontend security audit not configured"
+
+    - name: Run security audit for backend
+      working-directory: ./backend
+      run: npm audit --audit-level moderate || echo "Backend security audit not configured"
+
+    - name: Run Python security check
+      working-directory: ./backend
+      run: |
+        pip install safety || echo "Safety not available"
+        safety check || echo "Python security check not configured"
+
+  # Code quality and coverage
+  quality:
+    name: Code Quality
+    runs-on: ubuntu-latest
+    needs: [frontend, backend]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+
+    # Placeholder for SonarCloud or other quality tools
+    - name: Code quality analysis
+      run: echo "Code quality analysis will be configured later"
+
+    # Placeholder for test coverage reporting
+    - name: Upload coverage reports
+      run: echo "Coverage reporting will be configured later"
+
+  # Deployment preparation (for future use)
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [frontend, backend, security, quality, jira-integration]
+    if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Extract Jira issue key
+      id: jira
+      run: |
+        COMMIT_MSG="${{ github.event.head_commit.message }}"
+        JIRA_KEY=$(echo "$COMMIT_MSG" | grep -oE '[A-Z]+-[0-9]+' | head -1)
+        if [ -n "$JIRA_KEY" ]; then
+          echo "jira-key=$JIRA_KEY" >> $GITHUB_OUTPUT
+        fi
+    
+    - name: Prepare staging deployment
+      run: echo "Staging deployment will be configured later"
+    
+    - name: Update Jira - Deployed to Staging
+      if: steps.jira.outputs.jira-key != ''
+      uses: atlassian/gajira-comment@v3
+      with:
+        issue: ${{ steps.jira.outputs.jira-key }}
+        comment: |
+          🚀 **Deployed to Staging**
+          
+          **Environment:** Staging
+          **Deployment Time:** ${{ github.event.head_commit.timestamp }}
+          **Commit:** [${{ github.sha }}](${{ github.event.head_commit.url }})
+          **Workflow:** [${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          
+          Ready for testing! 🎉
+      env:
+        JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+        JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+        JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [frontend, backend, security, quality, jira-integration]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Extract Jira issue key
+      id: jira
+      run: |
+        COMMIT_MSG="${{ github.event.head_commit.message }}"
+        JIRA_KEY=$(echo "$COMMIT_MSG" | grep -oE '[A-Z]+-[0-9]+' | head -1)
+        if [ -n "$JIRA_KEY" ]; then
+          echo "jira-key=$JIRA_KEY" >> $GITHUB_OUTPUT
+        fi
+    
+    - name: Prepare production deployment
+      run: echo "Production deployment will be configured later"
+    
+    - name: Update Jira - Deployed to Production
+      if: steps.jira.outputs.jira-key != ''
+      uses: atlassian/gajira-transition@v3
+      with:
+        issue: ${{ steps.jira.outputs.jira-key }}
+        transition: "Done"
+      env:
+        JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+        JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+        JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+    
+    - name: Add production deployment comment
+      if: steps.jira.outputs.jira-key != ''
+      uses: atlassian/gajira-comment@v3
+      with:
+        issue: ${{ steps.jira.outputs.jira-key }}
+        comment: |
+          🎉 **Successfully Deployed to Production**
+          
+          **Environment:** Production
+          **Deployment Time:** ${{ github.event.head_commit.timestamp }}
+          **Commit:** [${{ github.sha }}](${{ github.event.head_commit.url }})
+          **Workflow:** [${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          
+          Feature is now live! 🚀
+      env:
+        JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+        JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+        JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+
+  # Jira notification for failed builds
+  notify-jira-failure:
+    name: Notify Jira on Failure
+    runs-on: ubuntu-latest
+    needs: [frontend, backend, security, quality]
+    if: failure()
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Extract Jira issue key
+      id: jira
+      run: |
+        if [ "${{ github.event_name }}" == "pull_request" ]; then
+          COMMIT_MSG="${{ github.event.pull_request.title }}"
+        else
+          COMMIT_MSG="${{ github.event.head_commit.message }}"
+        fi
+        JIRA_KEY=$(echo "$COMMIT_MSG" | grep -oE '[A-Z]+-[0-9]+' | head -1)
+        if [ -n "$JIRA_KEY" ]; then
+          echo "jira-key=$JIRA_KEY" >> $GITHUB_OUTPUT
+        fi
+    
+    - name: Comment on Jira issue about failure
+      if: steps.jira.outputs.jira-key != ''
+      uses: atlassian/gajira-comment@v3
+      with:
+        issue: ${{ steps.jira.outputs.jira-key }}
+        comment: |
+          ❌ **CI/CD Pipeline Failed**
+          
+          **Commit:** [${{ github.sha }}](${{ github.event.head_commit.url }})
+          **Branch:** ${{ github.ref_name }}
+          **Actor:** ${{ github.actor }}
+          **Workflow:** [${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          
+          Please check the workflow logs and fix the issues.
+      env:
+        JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+        JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+        JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}

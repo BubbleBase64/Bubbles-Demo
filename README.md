@@ -1,144 +1,110 @@
-# Bubbles News
+# 🫧 Bubbles – AI-Powered News Platform
 
-An AI-driven cross-platform news platform designed to help users consume news more critically, clearly, and consciously. Bubbles aggregates content from multiple sources, provides AI-powered summaries, detects ideological bias, and connects related stories through timeline visualization.
+Bubbles is an innovative, AI-enhanced web platform that transforms the way people consume news. By combining cutting-edge natural language processing with user-centered design, Bubbles delivers a personalized, critical, and socially engaging news experience.
 
-## 🎯 Mission
+## 🌐 Live Demo
+Coming soon...
 
-Enhance media literacy and support balanced information consumption in the age of polarized media through artificial intelligence and smart content curation.
+---
 
-## � Key Features
+## 📌 Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Team](#team)
+- [License](#license)
 
-- **AI-Powered Summarization**: Concise, context-preserving summaries using advanced NLP models
-- **Bias Detection**: Real-time ideological bias analysis with visual indicators
-- **Timeline Visualization**: Connect related stories chronologically 
-- **Cross-Platform**: Available on Web, iOS, and Android
-- **Smart Aggregation**: Content from multiple news sources and APIs
-- **Media Literacy**: Tools to promote critical thinking about news consumption
+---
 
-## 📱 Live Platform
+## 🧠 Overview
 
-- **Website**: [bubblesnews.app](https://www.bubblesnews.app)
-- **GitHub Organization**: [BubbleBase64](https://github.com/BubbleBase64)
+> “Consume critically. Understand clearly. Engage consciously.”
 
-## 🛠 Tech Stack
+Bubbles integrates news aggregation, AI summarization, bias detection, and timeline generation into a single clean interface — all designed to help users make sense of complex news landscapes while encouraging diverse viewpoints and meaningful discussions.
 
-### Frontend
-- **React.js** with Vite for fast development
-- **TailwindCSS** for responsive styling
-- **Framer Motion** for smooth animations
-- **Axios** for API communication
-- **TypeScript** for type safety
+This project is being developed as part of our senior graduation project at Bilkent University and received support from the Amazon mentorship program.
 
-### Backend & AI
-- **Node.js** with Express framework
-- **MongoDB Atlas** for cloud database
-- **Python AI Worker** with Groq/OpenAI APIs
-- **mT5/GPT-4** models for summarization
-- **Zero-shot classification** for bias detection
+---
 
-### Infrastructure
-- **Cloudflare Pages** for frontend hosting
-- **Railway** for backend deployment
-- **GitHub Actions** for CI/CD
-- **Cloudflare DNS** for domain management
-## 📁 Project Architecture
+## 🚀 Features
 
-The Bubbles platform follows a modular service-oriented architecture:
+### 📥 News Aggregation
+- Clean, personalized news feed
+- Breaking news alerts
 
-```
-Bubbles-Demo/
-├── backend/                 # Node.js + Express API server
-│   ├── server.js           # Main server entry point
-│   ├── model/              # MongoDB data models
-│   ├── routes/             # API endpoints for articles
-│   └── workers/            # Background news fetching workers
-├── frontend/               # React Native cross-platform app
-│   ├── app/                # Main application screens
-│   ├── components/         # Reusable UI components
-│   ├── contexts/           # React context providers
-│   └── screens/            # Screen implementations
-├── ai-worker/              # Python AI processing service (planned)
-├── docs/                   # Project documentation
-├── demo/                   # Demo assets and sample data
-└── scripts/                # Development and deployment scripts
-```
+### 🧠 AI Summarization
+- Article-level and story-level summarization
+- Fast and easy to digest information
 
-### Data Flow Architecture
-1. **Data Ingestion**: Backend fetches articles via RSS feeds and APIs
-2. **Storage**: Articles stored in MongoDB with processing status
-3. **AI Processing**: Python worker generates summaries and bias scores
-4. **Client Display**: Frontend presents processed articles with visualizations
+### ⚖️ Bias Detection
+- Detects ideological bias on a scale from -1 (left) to +1 (right)
+- Visual bias indicators per article
 
-## 🛠️ Quick Start
+### ⏳ Timeline Generation
+- Chronologically connects related news stories
+- Reveals how events evolve over time
 
-### Prerequisites
-- Node.js (v18+)
-- npm or yarn
-- Python 3.8+ (for AI worker)
-- MongoDB (local or Atlas)
+### 🧭 Multi-Perspective View
+- Surfaces articles on the same topic from different sources
+- Promotes media literacy and balanced thinking
 
-### Environment Setup
+### 💬 Social Interaction
+- Comment system grouped by topic hashtags (e.g., #Elections)
+- Personalized discussion threads based on user behavior
 
-1. **Clone the repository**:
-```bash
-git clone https://github.com/BubbleBase64/Bubbles-Demo.git
-cd Bubbles-Demo
-```
+### 🔔 Smart Notifications
+- Custom alerts based on interest and behavior
 
-2. **Backend setup**:
-```bash
-cd backend
+### 🎮 Gamification
+- XP system for engagement
+- Badges and levels to build user reputation
 
-## 🔧 Development
+---
 
-See [docs/development.md](docs/development.md) for detailed development guidelines.
+## 🛠️ Tech Stack
 
-## 📋 Features
+| Area            | Technology                                  |
+|-----------------|---------------------------------------------|
+| Frontend        | React.js, Tailwind CSS, React Flow (UI Graphs) |
+| Backend         | Node.js, Express, Python (Flask for AI APIs) |
+| AI / NLP        | HuggingFace Transformers, PyTorch / TensorFlow |
+| Database        | MongoDB Atlas                                |
+| Hosting         |  Railway                                     |
+| APIs            | News RSS and Special scrapers                |
+| DevOps & Tools  | GitHub, Jira, Confluence, GitHub Actions     |
 
-### Current Features
-- ✅ AI-powered article summarization
-- ✅ Real-time bias detection and visualization
-- ✅ Multi-source news aggregation
-- ✅ Cross-platform React Native support
-- ✅ MongoDB data persistence
-- ✅ RESTful API architecture
-- ✅ Responsive UI with TailwindCSS
-
-### Roadmap
-- 🔄 Timeline visualization for related stories
-- 🔄 Community discussion panels
-- 🔄 Gamification with badges and XP
-- 🔄 Mobile app with push notifications
-- 🔄 Turkish language fine-tuning
+---
 
 ## 👥 Team
 
-**Bubbles Development Team**:
-- **Ece Tuğba Cebeci** - AI & NLP Development, Coordination Support
-- **Erdem Erdoğdu** - Frontend Development & NLP Model Support  
-- **Hasan Kerem Demirel** - Backend & API Integration
-- **İbrahim Erdem Atila** - Backend & Frontend Integration
-- **İlhan Bahadır Yavaş** - Scrum Master, DevOps & System Architecture
+| Name                | Role                    | Email                                                                     |
+| ------------------- | ----------------------- | ------------------------------------------------------------------------- |
+| Ece Tuğba Cebeci    | AI & NLP Development, Coordination Support | [tugba.cebeci@ug.bilkent.edu.tr](mailto:tugba.cebeci@ug.bilkent.edu.tr)   |
+| Hasan Kerem Demirel | Backend & API Integration          | [kerem.demirel@ug.bilkent.edu.tr](mailto:kerem.demirel@ug.bilkent.edu.tr) |
+| İlhan Bahadır Yavaş | Scrum Master, DevOps & System Architecture | [bahadir.yavas@ug.bilkent.edu.tr](mailto:bahadir.yavas@ug.bilkent.edu.tr) |
+| Erdem Atila         | Backend & Frontend Integration         | [erdem.atila@ug.bilkent.edu.tr](mailto:erdem.atila@ug.bilkent.edu.tr)     |
+| Erdem Erdoğdu       | Frontend Development & NLP Model Support| [erdem.erdogdu@ug.bilkent.edu.tr](mailto:erdem.erdogdu@ug.bilkent.edu.tr) |
 
-**Mentors**: Canberk Keleş, Cato Mar
-
-## 📈 Project Management
-
-- **Methodology**: Scrumban with 2-week iterations
-- **Tools**: Jira (task tracking), GitHub (version control)
-- **Documentation**: GitBook (live docs), Google Drive
-- **Communication**: Zoom team meetings
-
-## 🤝 Contributing
-
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
+---
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
 
-## 📞 Contact
+---
 
-- **Organization**: [BubbleBase64](https://github.com/BubbleBase64)
-- **Website**: [bubblesnews.app](https://www.bubblesnews.app)
-- **Project Repository**: [Bubbles-Demo](https://github.com/BubbleBase64/Bubbles-Demo)
+## 🤝 Contributions
+
+We welcome pull requests and discussions! Please open an issue first to propose changes.
+
+---
+
+## 🧩 Acknowledgements
+
+* Bilkent University – CTIS Senior Project
+* Amazon Mentorship Program
+* HuggingFace, Snopes API, and open-source contributors
+
+---

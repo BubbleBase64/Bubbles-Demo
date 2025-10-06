@@ -1,21 +1,50 @@
-MIT License
+PROPRIETARY LICENSE
 
-Copyright (c) 2025 BubbleBase64
+Copyright (c) 2025 Bubbles Project Team
+All rights reserved.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+This software and associated documentation files (the "Software") are the 
+proprietary property of the Bubbles Project Team and are protected by 
+copyright laws and international copyright treaties, as well as other 
+intellectual property laws and treaties.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+GRANT OF LICENSE:
+This license grants you no rights to use, copy, modify, distribute, or 
+create derivative works of the Software without express written permission 
+from the copyright holders.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+RESTRICTIONS:
+- You may not copy, distribute, or transfer the Software or any portion thereof.
+- You may not reverse engineer, decompile, disassemble, or otherwise attempt 
+  to derive the source code of the Software.
+- You may not remove or alter any proprietary notices or labels on the Software.
+- You may not use the Software for any commercial purposes without explicit 
+  written authorization.
+
+TEAM MEMBERS:
+- Tuğba Cebeci (NLP & AI Model Development)
+- kdemirel849 (Backend & API Integration)  
+- İlhan Bahadır Yavaş (Project Coordination & Funding)
+- Erdem Atila (Backend & Frontend Integration)
+- Erdem Erdoğdu (Frontend & NLP Model Support)
+
+DISCLAIMER:
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN 
+THE SOFTWARE.
+
+FUTURE LICENSING:
+The copyright holders reserve the right to change the licensing terms of 
+this Software at any time. Future versions may be released under different 
+license terms, including but not limited to open source licenses.
+
+For licensing inquiries, please contact the project team.
+
+Project: Bubbles - AI-driven web platform for personalized, bias-aware, 
+and context-rich news consumption.
+
+Last updated: July 7, 2025

@@ -6,7 +6,7 @@ An AI-driven cross-platform news platform designed to help users consume news mo
 
 Enhance media literacy and support balanced information consumption in the age of polarized media through artificial intelligence and smart content curation.
 
-## � Key Features
+## 🗝️ Key Features
 
 - **AI-Powered Summarization**: Concise, context-preserving summaries using advanced NLP models
 - **Bias Detection**: Real-time ideological bias analysis with visual indicators
@@ -76,18 +76,6 @@ Bubbles-Demo/
 - npm or yarn
 - Python 3.8+ (for AI worker)
 - MongoDB (local or Atlas)
-
-### Environment Setup
-
-1. **Clone the repository**:
-```bash
-git clone https://github.com/BubbleBase64/Bubbles-Demo.git
-cd Bubbles-Demo
-```
-
-2. **Backend setup**:
-```bash
-cd backend
 
 ## 🔧 Development
 
